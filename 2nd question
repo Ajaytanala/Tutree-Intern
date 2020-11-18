@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+#include<deque>
+
+using namespace std;
+void findallsubstrings(string s1,string s2,vector<string>&ans){
+    int m=s1.length();
+    int n=s2.length();
+    int i;
+  if(n>m) return ;
+  unordered_map<char,int> m1,m2;
+  deque<char>q;
+  //push first n characters in deque
+  for(i=0;i<n;i++){
+    m2[s2[i]]++;
+    q.push_back(s1[i]);
+    m1[s1[i]]++;
+  }
+  unordered_map<char,int>:: iterator it;
+  for(it=m2.begin();it!=m2.end();it++){
+        if(it->second!=m1[it->first]) break;
+    }
+    if(it==m2.end()){
+        string use=s1.substr(0,n);
+        ans.push_back(use);
+    }
+  for(i=n;i<m;i++){
+        m1[q.front()]--;
+    q.pop_front();
+    m1[s1[i]]++;
+    q.push_back(s1[i]);
+    for(it=m2.begin();it!=m2.end();it++){
+        if(it->second!=m1[it->first]) break;
+    }
+    if(it==m2.end()){
+        string use=s1.substr(i+1-n,n);
+        ans.push_back(use);
+    }
+  }
+
+}
+int main()
+{   string s1,s2;
+    cin>>s1>>s2;
+    vector<string>ans;
+    findallsubstrings(s1,s2,ans);
+    for(int i=0;i<ans.size();i++){
+        cout<<ans[i]<<" ";
+    }
+    return 0;
+}
